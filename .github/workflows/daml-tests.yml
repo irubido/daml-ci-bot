@@ -1,0 +1,33 @@
+name: Daml Tests
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Java (Temurin 11)
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '11'
+
+      - name: Install Daml SDK
+        run: |
+          curl -sSL https://get.daml.com/ | sh
+          echo "$HOME/.daml/bin" >> "$GITHUB_PATH"
+
+      - name: Verify Daml installation
+        run: |
+          daml version
+
+      - name: Run Daml tests
+        run: daml test
