@@ -54,36 +54,6 @@ export default (app: Probot) => {
         throw error;
       }
 
-      // 3) Remove the temporary workflow file after dispatch
-      // try {
-      //   // Get current file sha on this ref
-      //   const current = await context.octokit.repos.getContent({
-      //     owner,
-      //     repo,
-      //     path: ".github/workflows/daml-tests-bot.yml",
-      //     ref,
-      //   });
-
-      //   if (!Array.isArray(current.data) && "sha" in current.data) {
-      //     const sha = (current.data as any).sha as string;
-      //     await context.octokit.repos.deleteFile({
-      //       owner,
-      //       repo,
-      //       path: ".github/workflows/daml-tests-bot.yml",
-      //       message: "Remove temporary daml-tests-bot workflow",
-      //       branch: ref,
-      //       sha,
-      //     });
-      //   }
-      // } catch (error) {
-      //   await context.octokit.issues.createComment({
-      //     owner,
-      //     repo,
-      //     issue_number: number,
-      //     body: "Could not remove 'daml-tests-bot.yml' after dispatch.",
-      //   });
-      //   // Do not throw; the main action already succeeded
-      // }
 
       await context.octokit.issues.createComment({
         owner,
