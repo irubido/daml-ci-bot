@@ -6,13 +6,6 @@ import { fileURLToPath } from "url";
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 export default (app: Probot) => {
-  app.on("issues.opened", async (context) => {
-    const issueComment = context.issue({
-      body: "Thanks for opening this issue!",
-    });
-    await context.octokit.issues.createComment(issueComment);
-  });
-
   app.on("pull_request.opened", async (context) => {
     const { owner, repo } = context.repo();
     const pr = context.payload.pull_request;
@@ -28,7 +21,7 @@ export default (app: Probot) => {
         await context.octokit.repos.createOrUpdateFileContents({
           owner,
           repo,
-          path: ".github/workflows/daml-tests.yml",
+          path: ".github/workflows/daml-tests-bot.yml",
           message: "Add Daml CI workflow",
           content: Buffer.from(workflowContent).toString("base64"),
           branch: ref,
@@ -38,7 +31,7 @@ export default (app: Probot) => {
           owner,
           repo,
           issue_number: number,
-          body: "❌ Could not add or update 'daml-tests.yml'.",
+          body: "Could not add or update 'daml-tests-bot.yml'.",
         });
         throw error;
       }
@@ -48,7 +41,7 @@ export default (app: Probot) => {
         await context.octokit.actions.createWorkflowDispatch({
           owner,
           repo,
-          workflow_id: "daml-tests.yml",
+          workflow_id: "daml-tests-bot.yml",
           ref,
         });
       } catch (error) {
@@ -56,31 +49,27 @@ export default (app: Probot) => {
           owner,
           repo,
           issue_number: number,
-          body: "❌ Could not dispatch 'daml-tests.yml'.",
+          body: "Could not dispatch 'daml-tests-bot.yml'.",
         });
         throw error;
       }
 
+
       await context.octokit.issues.createComment({
         owner,
         repo,
         issue_number: number,
-        body: "🚀 Daml tests workflow added and dispatched! Check the Actions tab for results.",
+        body: "Daml tests bot workflow added, dispatched, and then removed. Check the Actions tab for results.",
       });
     } catch (error) {
-      console.error("Error adding/dispatching daml-tests workflow:", error);
+      console.error("Error adding/dispatching daml-tests bot workflow:", error);
       await context.octokit.issues.createComment({
         owner,
         repo,
         issue_number: number,
-        body: "❌ Could not add or dispatch 'daml-tests.yml'. Ensure app has contents:write and actions:write.",
+        body: "Could not add or dispatch 'daml-tests-bot.yml'.",
       });
     }
   });
 
-  // For more information on building apps:
-  // https://probot.github.io/docs/
-
-  // To get your app running against GitHub, see:
-  // https://probot.github.io/docs/development/
 };
