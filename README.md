@@ -1,6 +1,6 @@
 # daml-ci-bot
 
-> A GitHub App built with [Probot](https://github.com/probot/probot) that DAML test bot
+> A GitHub App built with [Probot](https://github.com/probot/probot)
 
 ## Setup
 
@@ -8,8 +8,8 @@
 # Install dependencies
 npm install
 
-# Run the bot
-npm start
+# Build
+npm build
 ```
 
 ## Environment Variables
@@ -66,32 +66,6 @@ npm run test:coverage
 npm test
 ```
 
-### Code Quality
-
-```sh
-# Lint code
-npm run lint
-
-# Fix linting issues automatically
-npm run lint:fix
-
-# Type checking
-npm run type-check
-
-# Build the project
-npm run build
-```
-
-## CI/CD
-
-This project uses GitHub Actions for continuous integration. The CI pipeline runs on every push and pull request and includes:
-
-- **Code linting** with ESLint
-- **Type checking** with TypeScript
-- **Unit tests** with Vitest (14 tests, 96% coverage)
-- **Build verification** 
-- **Test coverage** reporting
-
 ## How it Works
 
 The bot works by:
@@ -107,12 +81,3 @@ The workflow template is stored in `templates/workflows/daml-tests.yml` and incl
 - Daml SDK installation
 - `daml test` execution
 
-## Contributing
-
-If you have suggestions for how daml-ci-bot could be improved, or want to report a bug, open an issue! We'd love all and any contributions.
-
-For more, check out the [Contributing Guide](CONTRIBUTING.md).
-
-## License
-
-[ISC](LICENSE) © 2025 irubido
